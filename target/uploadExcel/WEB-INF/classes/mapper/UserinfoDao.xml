@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.dao.UserinfoDao">
+
+    <resultMap id="BaseResultMap" type="com.yidu.entity.Userinfo">
+        <!--@Table userinfo-->
+        <result property="userid" column="userid" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userpass" column="userpass" jdbcType="VARCHAR"/>
+        <result property="compellation" column="compellation" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="headimg" column="headImg" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          userid, username, userpass, compellation, state, headImg
+        from t285.userinfo
+        where userid = #{userid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          userid, username, userpass, compellation, state, headImg
+        from t285.userinfo
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          userid, username, userpass, compellation, state, headImg
+        from t285.userinfo
+        <where>
+            <if test="userid != null">
+                and userid = #{userid}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="userpass != null and userpass != ''">
+                and userpass = #{userpass}
+            </if>
+            <if test="compellation != null and compellation != ''">
+                and compellation = #{compellation}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="headimg != null and headimg != ''">
+                and headImg = #{headimg}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userid" useGeneratedKeys="true">
+        insert into t285.userinfo(username, userpass, compellation, state, headImg)
+        values (#{username}, #{userpass}, #{compellation}, #{state}, #{headimg})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t285.userinfo
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="userpass != null and userpass != ''">
+                userpass = #{userpass},
+            </if>
+            <if test="compellation != null and compellation != ''">
+                compellation = #{compellation},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="headimg != null and headimg != ''">
+                headImg = #{headimg},
+            </if>
+        </set>
+        where userid = #{userid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from t285.userinfo where userid = #{userid}
+    </delete>
+
+</mapper>

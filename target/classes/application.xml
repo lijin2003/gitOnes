@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:default-servlet-handler/>
+    <context:component-scan base-package="com.yidu"/>
+
+    <!-- 开启注解驱动 -->
+    <mvc:annotation-driven>
+        <!--消息转换器，解决ResponseBody响应中文乱码-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!-- 加载连接文件 -->
+    <context:property-placeholder location="classpath:mysql.properties"/>
+    <!-- 配置数据源 -->
+    <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="password" value="${password}"/>
+        <property name="username" value="root"/>
+    </bean>
+    <!-- 配置会话工厂 -->
+    <bean name="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 配置数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置接口映射文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!-- 配置实体类别名包地址 -->
+        <property name="typeAliasesPackage" value="com.yidu.entity"/>
+    </bean>
+    <!-- 接口的映射代理  -->
+    <bean name="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <!-- 配置接口包地址 -->
+        <property name="basePackage" value="com.yidu.dao"/>
+    </bean>
+
+    <!--配置文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding">
+            <value>utf-8</value>
+        </property>
+        <property name="maxUploadSize">
+            <value>904857600</value>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,5 @@
+com\yidu\service\impl\UserinfoServiceImpl.class
+com\yidu\service\UserinfoService.class
+com\yidu\controller\UserinfoController.class
+com\yidu\dao\UserinfoDao.class
+com\yidu\entity\Userinfo.class
