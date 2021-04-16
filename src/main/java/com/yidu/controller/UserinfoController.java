@@ -25,6 +25,10 @@ import java.util.List;
  */
 @Controller
 public class UserinfoController {
+    public String test(){
+        System.out.println("测试");
+        return "";
+    }
     /**
      * 服务对象
      */
